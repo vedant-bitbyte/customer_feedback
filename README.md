@@ -1,8 +1,7 @@
 
-# 📝 Customer Feedback API (Internship Backend Project)
+# 📝 Customer Feedback API
 
-This is a Flask-based REST API for collecting customer feedback with user authentication. It is designed to simulate real-world full-stack internship development with modular structure and token-based login.
-
+This is a Flask-based REST API for collecting customer feedback with user authentication.
 ---
 
 ## 🚀 Features
