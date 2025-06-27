@@ -1,5 +1,7 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from ..models import db, User
+import jwt
+import datetime
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -30,7 +32,17 @@ def login():
 
         user = User.query.filter_by(email=data['email']).first()
         if user and user.check_password(data['password']):
-            return jsonify({"message": "Login successful"}), 200
+            # Generate JWT token
+            token = jwt.encode({
+                "user_id": user.id,
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+            }, current_app.config['SECRET_KEY'], algorithm="HS256")
+
+            return jsonify({
+                "message": "Login successful",
+                "token": token
+            }), 200
+
         return jsonify({"error": "Invalid credentials"}), 401
     except Exception as e:
         return jsonify({"error": f"Login failed: {str(e)}"}), 500

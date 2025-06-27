@@ -1,22 +1,24 @@
 from flask import Blueprint, request, jsonify
 from ..models import db, Feedback
+from ..utils.auth import token_required
 
 feedback_bp = Blueprint('feedback', __name__)
 
 @feedback_bp.route('/feedback', methods=['POST'])
-def submit_feedback():
+@token_required
+def submit_feedback(current_user):
     try:
         data = request.json
-        if not all(k in data for k in ('user_id', 'message')):
-            return jsonify({"error": "Missing user_id or message"}), 400
+        if 'message' not in data:
+            return jsonify({"error": "Message is required"}), 400
 
-        feedback = Feedback(user_id=data['user_id'], message=data['message'])
+        feedback = Feedback(user_id=current_user.id, message=data['message'])
         db.session.add(feedback)
         db.session.commit()
         return jsonify({"message": "Feedback submitted successfully"}), 201
     except Exception as e:
         return jsonify({"error": f"Feedback submission failed: {str(e)}"}), 500
-
+    
 @feedback_bp.route('/feedback', methods=['GET'])
 def get_feedback():
     try:
