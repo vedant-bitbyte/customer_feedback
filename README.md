@@ -23,8 +23,7 @@ customer_feedback/
 │
 ├── app/
 │   ├── __init__.py
-│   ├── config.py             ← Your local DB settings (ignored)
-│   ├── config_sample.py      ← Dummy config for reference
+│   ├── config.py             ← Your local DB settings
 │   ├── models.py
 │   ├── routes/
 │   │   ├── auth.py           ← Login & Register APIs
@@ -34,6 +33,8 @@ customer_feedback/
 │
 ├── run.py                    ← App entry point
 ├── requirements.txt
+├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
